@@ -163,5 +163,3 @@
   66% { transform: translate(-20px,20px) scale(0.95); }
 }
 .animate-blob { animation: blob 12s ease-in-out infinite; }
-  }
-}
