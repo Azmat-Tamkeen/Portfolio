@@ -4,7 +4,7 @@ import { About } from "@/components/portfolio/About";
 import { Education } from "@/components/portfolio/Education";
 import { Skills } from "@/components/portfolio/Skills";
 import { Projects } from "@/components/portfolio/Projects";
-import { Services } from "@/components/portfolio/Services";
+import { Achievements } from "@/components/portfolio/Achievements";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { useEffect } from "react";
@@ -31,7 +31,7 @@ const Index = () => {
         <Education />
         <Skills />
         <Projects />
-        <Services />
+        <Achievements />
         <Contact />
       </main>
       <Footer />

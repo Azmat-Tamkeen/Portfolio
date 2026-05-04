@@ -8,7 +8,7 @@ const links = [
   { href: "#education", label: "Education" },
   { href: "#skills", label: "Skills" },
   { href: "#projects", label: "Projects" },
-  { href: "#services", label: "Services" },
+  { href: "#achievements", label: "Achievements" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -30,7 +30,7 @@ export const Navbar = () => {
     >
       <nav className="container flex items-center justify-between">
         <a href="#home" className="font-display text-xl font-bold text-gradient">
-          Azmat<span className="text-foreground">.</span>
+          Portfolio<span className="text-foreground">.</span>
         </a>
         <ul className="hidden md:flex items-center gap-8">
           {links.map((l) => (

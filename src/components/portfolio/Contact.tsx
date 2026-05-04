@@ -14,17 +14,31 @@ const schema = z.object({
 });
 
 const info = [
-  { icon: Mail, label: "Email", value: "azmat.tamkeen@example.com", href: "mailto:azmat.tamkeen@example.com" },
-  { icon: Phone, label: "Phone", value: "+91 00000 00000", href: "tel:+910000000000" },
-  { icon: Linkedin, label: "LinkedIn", value: "/in/azmat-tamkeen", href: "https://linkedin.com" },
-  { icon: Github, label: "GitHub", value: "@azmat-tamkeen", href: "https://github.com" },
+  { 
+    icon: Mail, 
+    label: "Email", 
+    value: "azmatchand9581@gmail.com", 
+    href: "mailto:azmatchand9581@gmail.com" 
+  },
+  { 
+    icon: Linkedin, 
+    label: "LinkedIn", 
+    value: "linkedin.com/in/azmat-tamkeen-45ab82369", 
+    href: "https://www.linkedin.com/in/azmat-tamkeen-45ab82369" 
+  },
+  { 
+    icon: Github, 
+    label: "GitHub", 
+    value: "github.com/Azmat-Tamkeen", 
+    href: "https://github.com/Azmat-Tamkeen" 
+  },
 ];
 
 export const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = schema.safeParse(form);
     if (!res.success) {
@@ -32,11 +46,42 @@ export const Contact = () => {
       return;
     }
     setLoading(true);
-    setTimeout(() => {
-      toast({ title: "Message sent!", description: "Thanks for reaching out — I'll reply soon." });
-      setForm({ name: "", email: "", message: "" });
+
+    try {
+      const response = await fetch("https://formspree.io/f/mbdwgeke", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
+      });
+
+      if (response.ok) {
+        toast({ title: "Message sent!", description: "Thanks for reaching out — I'll reply soon." });
+        setForm({ name: "", email: "", message: "" });
+      } else {
+        throw new Error("Failed to send");
+      }
+    } catch (error) {
+      console.error("Formspree error:", error);
+      // Fallback to mailto if Formspree fails
+      const subject = encodeURIComponent(`Message from ${form.name}`);
+      const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`);
+      const mailtoLink = `mailto:azmatchand9581@gmail.com?subject=${subject}&body=${body}`;
+      window.location.href = mailtoLink;
+      
+      toast({ 
+        title: "Direct send failed", 
+        description: "Opening your mail client as a fallback.",
+        variant: "destructive" 
+      });
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   };
 
   return (
