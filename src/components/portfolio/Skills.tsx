@@ -1,5 +1,5 @@
 import { SectionHeading } from "./SectionHeading";
-import { Code, BarChart3, GitBranch, BrainCircuit, Database, Wrench } from "lucide-react";
+import { Code, BrainCircuit, Wrench } from "lucide-react";
 
 const categories = [
   {
