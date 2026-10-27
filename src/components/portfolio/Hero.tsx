@@ -1,7 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Mail, Github, Linkedin, Download } from "lucide-react";
+import { ArrowRight, Mail, Github, Linkedin, Download, Target, GraduationCap, Briefcase } from "lucide-react";
+
+const status = [
+  { icon: Target, label: "Focus", value: "Python · AI/ML · Data Science" },
+  { icon: GraduationCap, label: "Currently", value: "B.Tech" },
+  { icon: Briefcase, label: "Open to", value: "AI/ML, Data Science & Software Development Internships" },
+];
+
 export const Hero = () => {
-  const profile = "/image/az.jpeg";
+  const profile = "/image/az.png";
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-24 overflow-hidden">
       <div className="absolute inset-0 grid-bg opacity-40" />
@@ -14,31 +21,44 @@ export const Hero = () => {
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
             Available for opportunities
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold leading-[1.05]">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05]">
             Hi, I'm <span className="text-gradient">Azmat Tamkeen</span>
           </h1>
           <p className="text-xl md:text-2xl font-medium text-muted-foreground">
-            Aspiring AI/ML Engineer · Python Developer · Tech Enthusiast
+            Aspiring AI/ML Engineer · Data Science Enthusiast · Python Developer
           </p>
           <p className="text-base text-muted-foreground max-w-xl leading-relaxed">
-            A motivated B.Tech student passionate about Artificial Intelligence and
-            Machine Learning. I build real-world projects with Python, data
-            visualization, and a curious problem-solving mindset.
+            Motivated third-year B.Tech student specializing in Artificial Intelligence and Machine
+            Learning, with a CGPA of 9.70. Passionate about Data Science, Software Development, and
+            building real-world solutions using Python. Actively seeking internship opportunities to
+            apply technical knowledge and gain industry experience.
           </p>
+          <div className="flex flex-wrap gap-3">
+            {status.map((s) => (
+              <div
+                key={s.label}
+                className="glass rounded-full px-4 py-1.5 text-sm flex items-center gap-2"
+              >
+                <s.icon className="w-4 h-4 text-primary shrink-0" />
+                <span className="text-muted-foreground">{s.label}:</span>
+                <span className="font-medium">{s.value}</span>
+              </div>
+            ))}
+          </div>
           <div className="flex flex-wrap gap-4 pt-2">
             <Button asChild variant="hero" size="lg">
+              <a href="/resume.pdf" download>
+                <Download className="mr-2 w-5 h-5" /> Download Resume
+              </a>
+            </Button>
+            <Button asChild variant="glass" size="lg">
               <a href="#projects">
                 View Projects <ArrowRight className="ml-2 w-5 h-5" />
               </a>
             </Button>
-            <Button asChild variant="glass" size="lg">
-              <a href="#contact">
-                <Mail className="mr-2 w-5 h-5" /> Contact Me
-              </a>
-            </Button>
             <Button asChild variant="glass" size="lg" className="border-primary/20">
-              <a href="/resume.pdf" download>
-                <Download className="mr-2 w-5 h-5" /> Download Resume
+              <a href="#contact">
+                <Mail className="mr-2 w-5 h-5" /> Hire Me
               </a>
             </Button>
           </div>
@@ -64,7 +84,7 @@ export const Hero = () => {
         <div className="relative flex justify-center md:justify-end animate-scale-in">
           <div className="relative">
             <div className="absolute -inset-6 bg-gradient-primary rounded-full blur-2xl opacity-50 animate-glow-pulse" />
-            <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-glow animate-float">
+            <div className="relative w-56 h-56 sm:w-72 sm:h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-[hsl(var(--glass-border))] shadow-glow animate-float">
               <img
                 src={profile}
                 alt="Azmat Tamkeen — Aspiring AI/ML Engineer"
@@ -72,14 +92,6 @@ export const Hero = () => {
                 height={768}
                 className="w-full h-full object-cover"
               />
-            </div>
-            <div className="absolute -bottom-4 -left-4 glass rounded-2xl px-4 py-3 shadow-elegant animate-float" style={{ animationDelay: "1s" }}>
-              <p className="text-xs text-muted-foreground">Currently</p>
-              <p className="text-sm font-semibold">B.Tech AI & ML</p>
-            </div>
-            <div className="absolute -top-2 -right-2 glass rounded-2xl px-4 py-3 shadow-elegant animate-float" style={{ animationDelay: "2s" }}>
-              <p className="text-xs text-muted-foreground">Focus</p>
-              <p className="text-sm font-semibold text-gradient">Python · ML</p>
             </div>
           </div>
         </div>

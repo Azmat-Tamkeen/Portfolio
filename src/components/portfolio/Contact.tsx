@@ -106,7 +106,7 @@ export const Contact = () => {
               </a>
             ))}
           </div>
-          <form onSubmit={onSubmit} className="md:col-span-3 glass rounded-3xl p-8 space-y-5 shadow-elegant">
+          <form onSubmit={onSubmit} className="md:col-span-3 glass rounded-3xl p-6 sm:p-8 space-y-5 shadow-elegant">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium mb-2 block">Name</label>

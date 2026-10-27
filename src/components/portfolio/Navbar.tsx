@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
   { href: "#home", label: "Home" },
@@ -8,6 +9,7 @@ const links = [
   { href: "#education", label: "Education" },
   { href: "#skills", label: "Skills" },
   { href: "#projects", label: "Projects" },
+  { href: "#certifications", label: "Certifications" },
   { href: "#achievements", label: "Achievements" },
   { href: "#contact", label: "Contact" },
 ];
@@ -18,6 +20,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
+    onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -28,11 +31,11 @@ export const Navbar = () => {
         scrolled ? "glass shadow-elegant py-3" : "py-5 bg-transparent"
       }`}
     >
-      <nav className="container flex items-center justify-between">
-        <a href="#home" className="font-display text-xl font-bold text-gradient">
+      <nav className="container flex items-center justify-between gap-4">
+        <a href="#home" className="font-display text-xl font-bold text-gradient shrink-0">
           Portfolio<span className="text-foreground">.</span>
         </a>
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden lg:flex items-center gap-6 xl:gap-8">
           {links.map((l) => (
             <li key={l.href}>
               <a
@@ -44,19 +47,25 @@ export const Navbar = () => {
             </li>
           ))}
         </ul>
-        <Button asChild variant="hero" size="sm" className="hidden md:inline-flex">
-          <a href="#contact">Hire Me</a>
-        </Button>
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden text-foreground"
-          aria-label="Toggle menu"
-        >
-          {open ? <X /> : <Menu />}
-        </button>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <Button asChild variant="hero" size="sm" className="hidden lg:inline-flex">
+            <a href="#contact">Hire Me</a>
+          </Button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="lg:hidden -mr-2 p-2 text-foreground"
+            aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+          >
+            {open ? <X /> : <Menu />}
+          </button>
+        </div>
       </nav>
       {open && (
-        <div className="md:hidden glass mx-4 mt-3 rounded-2xl p-6 animate-fade-in">
+        <div id="mobile-menu" className="lg:hidden glass mx-4 mt-3 rounded-2xl p-6 animate-fade-in">
           <ul className="flex flex-col gap-4">
             {links.map((l) => (
               <li key={l.href}>

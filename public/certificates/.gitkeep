@@ -1,0 +1,2 @@
+# Place certificate files here (PDF or image), then reference them in
+# src/components/portfolio/Certifications.tsx via the `file` and `fileType` fields.

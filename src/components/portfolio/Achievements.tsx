@@ -1,190 +1,87 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SectionHeading } from "./SectionHeading";
-import { Trophy, Award, Star, Plus, Trash2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Download, Eye, Trophy, Award, type LucideIcon } from "lucide-react";
 
-const initialAchievements = [
+type AchievementType = "pdf" | "image";
+
+interface Achievement {
+  id: string;
+  icon: LucideIcon;
+  title: string;
+  org: string;
+  desc: string;
+  tag: string;
+  /** File inside `public`, e.g. "/certificates/mgit-first-year-academic-topper.pdf". */
+  file: string;
+  /** "pdf" opens in a new tab, "image" opens a responsive preview. */
+  fileType: AchievementType;
+}
+
+// To add an achievement: drop the file into `public/certificates/` and add an entry here.
+const achievements: Achievement[] = [
   {
-    id: "1",
-    icon: "Trophy",
-    title: "Academic Excellence",
-    desc: "Achieved an outstanding CGPA of 9.85/10 in Intermediate (MPC) at Sri Sai Co-op Junior College.",
-    tag: "9.85 CGPA",
+    id: "first-year-academic-topper",
+    icon: Trophy,
+    title: "First-Year Academic Topper",
+    org: "MGIT",
+    desc: "Awarded an Academic Topper Certificate and Medal for outstanding academic performance in the first year of B.Tech.",
+    tag: "Academic Topper",
+    file: "/certificates/mgit-first-year-academic-topper.pdf",
+    fileType: "pdf",
   },
   {
-    id: "2",
-    icon: "Award",
-    title: "Secondary Education Milestone",
-    desc: "Completed 10th Grade with a high CGPA of 9.8/10 at Modern High School.",
-    tag: "9.8 CGPA",
-  },
-  {
-    id: "3",
-    icon: "Star",
-    title: "B.Tech Specialization",
-    desc: "Currently specializing in Artificial Intelligence and Machine Learning at MGIT, maintaining a strong academic record.",
-    tag: "In Progress",
+    id: "hackathon-participant",
+    icon: Award,
+    title: "Hackathon Participant",
+    org: "MGIT",
+    desc: "Participated in the MGIT Hackathon, demonstrating problem-solving, innovation, and teamwork skills.",
+    tag: "Hackathon",
+    file: "/certificates/mgit-hackathon-participation.pdf",
+    fileType: "pdf",
   },
 ];
 
-const iconMap = {
-  Trophy: Trophy,
-  Award: Award,
-  Star: Star,
+const buildDownloadName = (a: Achievement) => {
+  const ext = a.file.split(".").pop() || (a.fileType === "image" ? "png" : "pdf");
+  const base = `${a.org}-${a.title}`
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return `${base}.${ext}`;
 };
 
 export const Achievements = () => {
-  const [items, setItems] = useState(() => {
-    const saved = localStorage.getItem("portfolio_achievements");
-    return saved ? JSON.parse(saved) : initialAchievements;
-  });
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [newAch, setNewAch] = useState({
-    title: "",
-    desc: "",
-    tag: "",
-    icon: "Award",
-    certificate: null as string | null,
-  });
-
-  useEffect(() => {
-    localStorage.setItem("portfolio_achievements", JSON.stringify(items));
-  }, [items]);
-
-  const handleAdd = () => {
-    if (!newAch.title || !newAch.desc) return;
-    const item = {
-      ...newAch,
-      id: Math.random().toString(36).substr(2, 9),
-    };
-    setItems([...items, item]);
-    setNewAch({ title: "", desc: "", tag: "", icon: "Award", certificate: null });
-    setIsOpen(false);
-  };
-
-  const handleDelete = (id: string) => {
-    setItems(items.filter((it: any) => it.id !== id));
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewAch({ ...newAch, certificate: reader.result as string });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const [preview, setPreview] = useState<Achievement | null>(null);
 
   return (
     <section id="achievements" className="py-24 relative">
       <div className="container">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-10">
-          <SectionHeading 
-            eyebrow="My Success Stories" 
-            title="Achievements & Milestones" 
-            subtitle="Key highlights of my professional and academic journey so far." 
+        <div className="mb-10">
+          <SectionHeading
+            eyebrow="My Success Stories"
+            title="Achievements & Milestones"
+            subtitle="Key highlights of my academic journey so far."
           />
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button variant="hero" className="gap-2">
-                <Plus className="w-4 h-4" /> Add Achievement
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="glass border-white/10 text-foreground">
-              <DialogHeader>
-                <DialogTitle>Add New Achievement</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Title</Label>
-                  <Input 
-                    id="title" 
-                    value={newAch.title} 
-                    onChange={(e) => setNewAch({...newAch, title: e.target.value})}
-                    placeholder="e.g. Hackathon Winner"
-                    className="bg-background/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="desc">Description</Label>
-                  <Textarea 
-                    id="desc" 
-                    value={newAch.desc} 
-                    onChange={(e) => setNewAch({...newAch, desc: e.target.value})}
-                    placeholder="Describe your achievement..."
-                    className="bg-background/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="tag">Tag / Badge</Label>
-                  <Input 
-                    id="tag" 
-                    value={newAch.tag} 
-                    onChange={(e) => setNewAch({...newAch, tag: e.target.value})}
-                    placeholder="e.g. 1st Place"
-                    className="bg-background/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Certificate (Optional)</Label>
-                  <div className="flex items-center gap-4">
-                    <Button 
-                      type="button" 
-                      variant="glass" 
-                      onClick={() => document.getElementById("cert-upload")?.click()}
-                      className="w-full"
-                    >
-                      <Upload className="w-4 h-4 mr-2" /> 
-                      {newAch.certificate ? "Change Certificate" : "Upload Certificate"}
-                    </Button>
-                    <input 
-                      id="cert-upload" 
-                      type="file" 
-                      accept="image/*,application/pdf" 
-                      className="hidden" 
-                      onChange={handleFileUpload}
-                    />
-                  </div>
-                  {newAch.certificate && (
-                    <div className="text-xs text-primary flex items-center gap-1 mt-1">
-                      Certificate attached! <Button variant="ghost" size="icon" className="h-4 w-4" onClick={() => setNewAch({...newAch, certificate: null})}><X className="w-3 h-3"/></Button>
-                    </div>
-                  )}
-                </div>
-                <Button onClick={handleAdd} className="w-full" variant="hero">
-                  Save Achievement
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {items.map((a: any) => {
-            const Icon = iconMap[a.icon as keyof typeof iconMap] || Award;
+        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {achievements.map((a) => {
+            const Icon = a.icon;
+            const isImage = a.fileType === "image";
+            const downloadName = buildDownloadName(a);
+
             return (
-              <div key={a.id} className="glass rounded-3xl p-8 group hover:-translate-y-2 transition-all duration-300 relative overflow-hidden">
+              <div
+                key={a.id}
+                className="glass rounded-3xl p-6 sm:p-8 group hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col"
+              >
                 <div className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity" />
-                <button 
-                  onClick={() => handleDelete(a.id)}
-                  className="absolute top-4 right-4 p-2 rounded-full bg-destructive/10 text-destructive opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive hover:text-white"
-                  title="Delete Achievement"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
                 <div className="relative">
                   <div className="w-14 h-14 grid place-items-center rounded-2xl bg-gradient-primary mb-5 shadow-glow">
                     <Icon className="w-7 h-7 text-primary-foreground" />
@@ -192,22 +89,49 @@ export const Achievements = () => {
                   <span className="text-xs font-semibold px-3 py-1 rounded-full glass mb-3 inline-block">
                     {a.tag}
                   </span>
-                  <h3 className="text-xl font-bold mb-3">{a.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4">{a.desc}</p>
-                  {a.certificate && (
-                    <Button variant="glass" size="sm" asChild className="w-full">
-                      <a href={a.certificate} target="_blank" rel="noreferrer">
-                        View Certificate
+                  <h3 className="text-xl font-bold mb-1">{a.title}</h3>
+                  <p className="text-sm text-gradient font-medium mb-3">{a.org}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{a.desc}</p>
+                </div>
+
+                <div className="relative mt-6 pt-5 border-t border-border/60 flex flex-wrap gap-3">
+                  {isImage ? (
+                    <Button variant="hero" size="sm" onClick={() => setPreview(a)}>
+                      <Eye className="mr-2 w-4 h-4" /> View Certificate
+                    </Button>
+                  ) : (
+                    <Button asChild variant="hero" size="sm">
+                      <a href={a.file} target="_blank" rel="noreferrer">
+                        <Eye className="mr-2 w-4 h-4" /> View Certificate
                       </a>
                     </Button>
                   )}
+                  <Button asChild variant="glass" size="sm">
+                    <a href={a.file} download={downloadName}>
+                      <Download className="mr-2 w-4 h-4" /> Download
+                    </a>
+                  </Button>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+
+      <Dialog open={Boolean(preview)} onOpenChange={(open) => !open && setPreview(null)}>
+        <DialogContent className="glass border-[hsl(var(--glass-border))] text-foreground max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>{preview?.title}</DialogTitle>
+          </DialogHeader>
+          {preview?.file && (
+            <img
+              src={preview.file}
+              alt={`${preview.title} certificate from ${preview.org}`}
+              className="w-full h-auto max-h-[70vh] object-contain rounded-xl"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
-
