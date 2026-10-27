@@ -28,8 +28,8 @@ export const Hero = () => {
             Aspiring AI/ML Engineer · Data Science Enthusiast · Python Developer
           </p>
           <p className="text-base text-muted-foreground max-w-xl leading-relaxed">
-            Motivated third-year B.Tech student specializing in Artificial Intelligence and Machine
-            Learning, with a CGPA of 9.70. Passionate about Data Science, Software Development, and
+            Motivated third-year B.Tech student 
+            with a CGPA of 9.70. Passionate about Data Science, Software Development, and
             building real-world solutions using Python. Actively seeking internship opportunities to
             apply technical knowledge and gain industry experience.
           </p>

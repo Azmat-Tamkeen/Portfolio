@@ -8,7 +8,7 @@ const education = [
     period: "In Progress",
     title: "Bachelor of Technology (B.Tech)",
     place: "Mahatma Gandhi Institute of Technology (MGIT)",
-    detail: "Specialization: AI & ML | CGPA: 9.70 / 10",
+    detail: "CGPA: 9.70 / 10",
   },
   {
     id: "2",

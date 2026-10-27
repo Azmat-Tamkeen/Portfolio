@@ -2,7 +2,7 @@ import { Brain, Lightbulb, Rocket, Code2 } from "lucide-react";
 import { SectionHeading } from "./SectionHeading";
 
 const paragraphs = [
-  "I'm a third-year B.Tech student specializing in Artificial Intelligence and Machine Learning at Mahatma Gandhi Institute of Technology (MGIT), with a CGPA of 9.70.",
+  "I'm a third-year B.Tech student at Mahatma Gandhi Institute of Technology (MGIT), with a CGPA of 9.70.",
   "I'm passionate about Data Science, Software Development, and solving real-world problems through technology. I enjoy developing practical projects using Python and exploring data-driven solutions.",
   "I'm continuously strengthening my programming, problem-solving, and technical skills while exploring emerging AI technologies and seeking internship opportunities in AI/ML, Data Science, and Software Development.",
 ];
